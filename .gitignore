@@ -1,0 +1,4 @@
+[glob]
+dist/
+build/
+*.pyc

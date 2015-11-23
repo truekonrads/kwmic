@@ -5,7 +5,7 @@ import argparse,functools,socket,csv
 from filetimes import filetime_to_dt
 DEBUG=False
 RPC_SERVER_UNAVAIL=-2147023174
-TIMEOUT=5
+TIMEOUT=3
 FIXATTRS="CSName HotFixID InstalledBy InstalledOn Description".split(" ")
 def isWindowsListening(computername,debug=False):
 
@@ -67,7 +67,7 @@ def getHotfixes(computername,username=None,password=None,debug=False):
 
 def main():
     global DEBUG
-    parser = argparse.ArgumentParser(description='Retrieve IP configuration using WMI based on hostnames')
+    parser = argparse.ArgumentParser(description='Retrieve HotFixes using WMI based on hostnames')
     parser.add_argument('--processes','-n', type=int,default=5,
                    help='Number of processes to use')
     parser.add_argument('--username','-u', type=str,
@@ -77,9 +77,7 @@ def main():
     parser.add_argument('computerlist',metavar='FILE',type=str,default='-',nargs='?')
     parser.add_argument('--debug','-d',action='store_true',default=False)
     parser.add_argument('--output','-o', type=str,
-                   help='output')
-
-    
+                   help='output')  
 
     args = parser.parse_args()
     DEBUG=args.debug
@@ -108,7 +106,12 @@ def main():
     csvout.writeheader()
     # for computer in res:
     for computer in res:
-        csvout.writerows(computer)
+        for row in computer:
+            try:
+                csvout.writerow(row)
+            except Exception,e:
+                print "[EE] Bummed out on {}".format(row)
+
 
 
 
