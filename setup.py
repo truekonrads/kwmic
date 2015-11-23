@@ -24,7 +24,7 @@ try:
 except ImportError:
     # no build path setup, no worries.
     pass
-setup(console=['getwmiips.py','getwmipatches.py'],
+setup(console=['getwmiips.py','getwmipatches.py','getwmibuildno.py'],
         zipfile=None,
       options={"py2exe": {'bundle_files': 1, 'compressed': True, "includes": ["win32com","wmi","multiprocessing"]}})
 #http://www.py2exe.org/index.cgi/UsingEnsureDispatch
